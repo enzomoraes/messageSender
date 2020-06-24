@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "241871559946",
+    "firebase_url": "https://messagesender-progmobile.firebaseio.com",
+    "project_id": "messagesender-progmobile",
+    "storage_bucket": "messagesender-progmobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241871559946:android:5ad34efae58fc1fbb8eef3",
+        "android_client_info": {
+          "package_name": "com.example.messagesender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241871559946-33nj9lsmjbu8c29sctak2nn1vjv4bme5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSiLeEb7GNyQxRKuJB83UrTnX2oej12-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241871559946-33nj9lsmjbu8c29sctak2nn1vjv4bme5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

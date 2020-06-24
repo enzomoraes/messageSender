@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Message Sender</string>
+    <string name="tab_conversas">Conversas</string>
+    <string name="tab_status">Status</string>
+    <string name="tab_chamadas">Chamadas</string>
+
+    // Strings Tela Login e Cadastro
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="email">Email</string>
+    <string name="senha">Senha</string>
+    <string name="login">Login</string>
+    <string name="criarconta">Não tem uma Conta? Crie Aqui!</string>
+    <string name="username">Nome</string>
+    <string name="signup">Cadastrar</string>
+</resources>
