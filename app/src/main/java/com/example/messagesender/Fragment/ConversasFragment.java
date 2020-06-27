@@ -18,10 +18,6 @@ public class ConversasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_conversas, container, false);
 
-        String lista[] = new String[]{"Alo", "ola"};
-
-        listaConversas = view.findViewById(R.id.listaConversas);
-        listaConversas.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, lista));
         return view;
     }
 }
