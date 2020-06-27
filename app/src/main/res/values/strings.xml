@@ -13,4 +13,10 @@
     <string name="username">Nome</string>
     <string name="signup">Cadastrar</string>
     <string name="img">Foto</string>
+
+    //String main_Menu
+    <string name="item_confi">Configuraçôes</string>
+    <string name="item_sair">Sair</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

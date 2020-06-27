@@ -1,4 +1,4 @@
-package com.example.messagesender;
+package com.example.messagesender.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.messagesender.R;
 
 public class ConversasFragment extends Fragment {
     ListView listaConversas;
