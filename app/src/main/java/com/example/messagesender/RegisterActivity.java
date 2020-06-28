@@ -1,10 +1,14 @@
 package com.example.messagesender;
 
+import android.Manifest;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -16,7 +20,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,6 +46,7 @@ import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private static final int PERMISSION_REQUEST_CODE = 200;
     private EditText mEditUsername;
     private EditText mEditEmail;
     private EditText mEditSenha;
@@ -62,7 +70,11 @@ public class RegisterActivity extends AppCompatActivity {
         mBtnSelectedPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectPhoto();
+                if (checkPermission() == true) {
+                    selectPhoto();
+                } else {
+                    requestPermission();
+                }
             }
         });
 
@@ -106,15 +118,15 @@ public class RegisterActivity extends AppCompatActivity {
     private void createUser() {
         String nome = mEditUsername.getText().toString();
         String email = mEditEmail.getText().toString();
-        String senha = mEditSenha.getText().toString();
+        // nao usar variavel pra guardar a senha por segurança.
 
 
-        if (nome == null || nome.isEmpty() || email == null || email.isEmpty() || senha == null || senha.isEmpty()){
+        if (nome == null || nome.isEmpty() || email == null || email.isEmpty() || mEditSenha.getText().toString() == null || mEditSenha.getText().toString().isEmpty()){
             Toast.makeText(this, "Nome, senha, email e foto devem ser inseridos!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, senha)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, mEditSenha.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -128,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.i("Teste", e.getMessage());
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -142,7 +154,8 @@ public class RegisterActivity extends AppCompatActivity {
             final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
             // Usuário sem foto
             if (mSelectedUri == null){
-                // TODO
+                Toast.makeText(getApplicationContext(), "Selecione uma foto", Toast.LENGTH_SHORT).show();
+                return;
             }
 
 
@@ -190,4 +203,48 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
+
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            return false;
+        }
+        return true;
+    }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "Permission Granted",
+                            Toast.LENGTH_SHORT).show();
+                    // main logic
+                } else {
+                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+                            showMessageOKCancel("You need to allow access permissions", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Toast.makeText(getApplicationContext(), "Allow Permission", Toast.LENGTH_SHORT).show();
+                                            requestPermission();
+                                        }
+                                    });
+                        }
+                }
+                break;
+        }
+    }
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
 }
