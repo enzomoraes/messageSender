@@ -1,4 +1,4 @@
-package com.example.messagesender;
+package com.example.messagesender.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.messagesender.R;
+
 public class ConversasFragment extends Fragment {
     ListView listaConversas;
 
@@ -16,10 +18,6 @@ public class ConversasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_conversas, container, false);
 
-        String lista[] = new String[]{"Alo", "ola"};
-
-        listaConversas = view.findViewById(R.id.listaConversas);
-        listaConversas.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, lista));
         return view;
     }
 }

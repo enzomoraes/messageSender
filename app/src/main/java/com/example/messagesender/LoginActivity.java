@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button mBtnLogin;
     private TextView mTxtAccount;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    abrirTelaPrincipal();
+                                    Toast.makeText(LoginActivity.this, "Login Realizado", Toast.LENGTH_SHORT).show();
                                     Log.i("Teste", task.getResult().getUser().getUid());
                                 }
                             }
@@ -61,12 +64,13 @@ public class LoginActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(LoginActivity.this, "Erro,  Usuario/Senha errado", Toast.LENGTH_SHORT).show();
+
                                 Log.i("Teste", e.getMessage());
                             }
                         });
             }
         });
-
         mTxtAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +78,12 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    private void abrirTelaPrincipal(){
+        Intent intent = new Intent(LoginActivity.this, MessagesActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.messagesender;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -25,12 +26,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
+import java.net.URL;
 import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -104,8 +108,9 @@ public class RegisterActivity extends AppCompatActivity {
         String email = mEditEmail.getText().toString();
         String senha = mEditSenha.getText().toString();
 
+
         if (nome == null || nome.isEmpty() || email == null || email.isEmpty() || senha == null || senha.isEmpty()){
-            Toast.makeText(this, "Nome, senha e email devem ser preenchidos!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Nome, senha, email e foto devem ser inseridos!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -126,48 +131,63 @@ public class RegisterActivity extends AppCompatActivity {
                         Log.i("Teste", e.getMessage());
                     }
                 });
+
+
     }
 
     private void saveUserInFirebase() {
-        String filename = UUID.randomUUID().toString();
-        final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
-        ref.putFile(mSelectedUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Log.i("Teste", uri.toString());
 
-                                String uid = FirebaseAuth.getInstance().getUid();
-                                String username = mEditUsername.getText().toString();
-                                String profileUrl = uri.toString();
+            String filename = UUID.randomUUID().toString();
 
-                                User user = new User(uid, username, profileUrl);
-                                FirebaseFirestore.getInstance().collection("users")
-                                        .add(user)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-                                                Log.i("Teste", documentReference.getId());
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.i("Teste", e.getMessage());
-                                            }
-                                        });
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Teste", e.getMessage(), e);
-                    }
-                });
+            final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
+            // Usuário sem foto
+            if (mSelectedUri == null){
+                // TODO
+            }
+
+
+            ref.putFile(mSelectedUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Log.i("Teste", uri.toString());
+
+                                    String uid = FirebaseAuth.getInstance().getUid();
+                                    String username = mEditUsername.getText().toString();
+                                    String profileUrl = uri.toString();
+
+                                    User user = new User(uid, username, profileUrl);
+                                    FirebaseFirestore.getInstance().collection("users")
+                                            .add(user)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    Log.i("Teste", documentReference.getId());
+                                                    Intent intent = new Intent(RegisterActivity.this, MessagesActivity.class);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.i("Teste", e.getMessage());
+                                                }
+                                            });
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("Teste", e.getMessage(), e);
+                        }
+                    });
+
+
     }
 }

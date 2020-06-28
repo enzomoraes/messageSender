@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_lupa"
+        android:icon="@drawable/ic_lupa"
+        android:title="@string/lupa"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/item_contato"
+        android:icon="@drawable/ic_add_contato"
+        android:title="@string/addContato"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/item_config"
+        android:title="@string/item_config"
+        />
+    <item
+        android:id="@+id/item_sair"
+        android:title="@string/item_sair" />
+</menu>

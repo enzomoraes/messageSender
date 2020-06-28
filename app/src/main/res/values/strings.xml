@@ -13,4 +13,14 @@
     <string name="username">Nome</string>
     <string name="signup">Cadastrar</string>
     <string name="img">Foto</string>
+
+    //String main_Menu
+    <string name="item_config">Configuraçôes</string>
+    <string name="item_sair">Sair</string>
+    <string name="lupa">Lupa</string>
+    <string name="addContato">Adicionar Contato</string>
+
+    // Content Description
+    <string name="contactPhoto">Foto do Contato</string>
+
 </resources>
