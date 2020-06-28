@@ -1,14 +1,17 @@
 package com.example.messagesender;
 
 public class User {
-    private final String uuid;
-    private final String username;
-    private final String profileUrl;
+    private String uuid;
+    private String username;
+    private String profileUrl;
 
     public User(String uuid, String username, String profileUrl) {
         this.uuid = uuid;
         this.username = username;
         this.profileUrl = profileUrl;
+    }
+    public User() {
+
     }
 
     public String getUuid() {

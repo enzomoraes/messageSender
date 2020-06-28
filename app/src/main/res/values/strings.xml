@@ -15,8 +15,12 @@
     <string name="img">Foto</string>
 
     //String main_Menu
-    <string name="item_confi">Configuraçôes</string>
+    <string name="item_config">Configuraçôes</string>
     <string name="item_sair">Sair</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lupa">Lupa</string>
+    <string name="addContato">Adicionar Contato</string>
+
+    // Content Description
+    <string name="contactPhoto">Foto do Contato</string>
+
 </resources>

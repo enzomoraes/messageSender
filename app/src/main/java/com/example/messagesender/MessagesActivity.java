@@ -3,37 +3,37 @@ package com.example.messagesender;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.viewpager.widget.ViewPager;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.example.messagesender.Fragment.ContatosFragment;
 import com.example.messagesender.Fragment.ConversasFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class TelaPriActivity extends AppCompatActivity {
+public class MessagesActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Usuario esta logado ?
+        verifyAuthentication();
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tela_pri);
+        setContentView(R.layout.activity_messages);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        tabLayout= findViewById(R.id.tabLayout);
-        viewPager=findViewById(R.id.myViewPager);
+        tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.myViewPager);
 
-
-        toolbar.setTitle("MessegeSender");
+        toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
         setupViewPager(viewPager);
 
@@ -53,19 +53,25 @@ public class TelaPriActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.item_sair:
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(TelaPriActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
+                verifyAuthentication();
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragments(new ConversasFragment(), "Conversas");
         viewPagerAdapter.addFragments(new ContatosFragment(), "Contatos");
         viewPager.setAdapter(viewPagerAdapter);
+    }
+
+    private void verifyAuthentication() {
+        if (FirebaseAuth.getInstance().getUid() == null){
+            Intent intent = new Intent(this, LoginActivity.class);
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(intent);
+        }
     }
 }
