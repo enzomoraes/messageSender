@@ -43,17 +43,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String email = mEditEmail.getText().toString();
-                String senha = mEditSenha.getText().toString();
+
 
                 Log.i("Teste", email);
-                Log.i("Teste", senha);
+                Log.i("Teste", mEditSenha.getText().toString());
 
-                if (email == null || email.isEmpty() || senha == null || senha.isEmpty()){
+                if (email == null || email.isEmpty() || mEditSenha.getText().toString() == null || mEditSenha.getText().toString().isEmpty()){
                     Toast.makeText(LoginActivity.this, "Senha e email devem ser preenchidos!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, senha)
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, mEditSenha.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
