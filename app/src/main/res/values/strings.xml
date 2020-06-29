@@ -23,4 +23,8 @@
     // Content Description
     <string name="contactPhoto">Foto do Contato</string>
 
+    // Tela Conversa
+    <string name="btnChat">Enviar</string>
+    <string name="message">Digite a mensagem...</string>
+
 </resources>
