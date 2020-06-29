@@ -1,11 +1,10 @@
 package com.example.messagesender.Fragment;
 
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,8 +17,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.messagesender.ChatActivity;
 import com.example.messagesender.R;
 import com.example.messagesender.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
+import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.ViewHolder;
 
 import java.util.List;
@@ -53,11 +55,24 @@ public class ContatosFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contatos, container, false);
 
+        // Linha divisoria do recycler view de contatos
         recyclerView = view.findViewById(R.id.recycler);
-        groupAdapter = new GroupAdapter();
-        recyclerView.setAdapter(groupAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+
+
+        groupAdapter = new GroupAdapter();
+        recyclerView.setAdapter(groupAdapter);
+        groupAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull Item item, @NonNull View view) {
+                Intent intent = new Intent(view.getContext(), ChatActivity.class);
+
+                UserItem userItem = (UserItem) item;
+                intent.putExtra("user", userItem.user);
+                startActivity(intent);
+            }
+        });
 
         fetchUsers();
 
@@ -74,11 +89,14 @@ public class ContatosFragment extends Fragment {
                             return;
                         }
                         List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+                        String idProprio = FirebaseAuth.getInstance().getUid();
                         for (DocumentSnapshot doc : docs){
+
                             User user = doc.toObject(User.class);
                             Log.d("Teste", user.getUsername());
 
-                            groupAdapter.add(new UserItem(user));
+                            if(!user.getUuid().equals(idProprio))
+                                groupAdapter.add(new UserItem(user));
                         }
                     }
                 });
@@ -95,7 +113,6 @@ public class ContatosFragment extends Fragment {
         public void bind(@NonNull ViewHolder viewHolder, int position) {
             TextView txtUsername = viewHolder.itemView.findViewById(R.id.txtUsername);
             ImageView imgUser = viewHolder.itemView.findViewById(R.id.imgUser);
-
 
             txtUsername.setText(user.getUsername());
 

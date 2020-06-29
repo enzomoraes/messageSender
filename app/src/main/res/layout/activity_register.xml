@@ -7,19 +7,6 @@
     android:background="@color/bgColor"
     tools:context=".RegisterActivity">
 
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorAccent"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/app_name" />
-
     <EditText
         android:id="@+id/editUsername"
         android:layout_width="0dp"
@@ -87,24 +74,25 @@
         android:id="@+id/btnSelectedPhoto"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/bg_button_img_rounded"
         android:text="@string/img"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgPhoto"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:civ_border_width="2dp"
+        android:layout_marginTop="32dp"
         app:civ_border_color="@color/colorAccent"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/btnSelectedPhoto"
         app:layout_constraintEnd_toEndOf="@+id/btnSelectedPhoto"
         app:layout_constraintStart_toStartOf="@+id/btnSelectedPhoto"
-        app:layout_constraintTop_toTopOf="@+id/btnSelectedPhoto" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

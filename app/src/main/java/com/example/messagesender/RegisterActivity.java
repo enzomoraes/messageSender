@@ -93,6 +93,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 0){
+            if (resultCode == RESULT_CANCELED)
+                return;
             mSelectedUri = data.getData();
 
             Bitmap bitmap = null;
@@ -112,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void selectPhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/+");
+        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivityForResult(intent, 0);
     }
 
@@ -121,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
         // nao usar variavel pra guardar a senha por segurança.
 
 
-        if (nome == null || nome.isEmpty() || email == null || email.isEmpty() || mEditSenha.getText().toString() == null || mEditSenha.getText().toString().isEmpty()){
+        if (nome == null || nome.isEmpty() || email == null || email.isEmpty() || mEditSenha.getText().toString() == null || mEditSenha.getText().toString().isEmpty() || mSelectedUri == null){
             Toast.makeText(this, "Nome, senha, email e foto devem ser inseridos!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -174,11 +177,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     User user = new User(uid, username, profileUrl);
                                     FirebaseFirestore.getInstance().collection("users")
-                                            .add(user)
-                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            .document(uid)
+                                            .set(user)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
-                                                public void onSuccess(DocumentReference documentReference) {
-                                                    Log.i("Teste", documentReference.getId());
+                                                public void onSuccess(Void aVoid) {
                                                     Intent intent = new Intent(RegisterActivity.this, MessagesActivity.class);
                                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                     startActivity(intent);
