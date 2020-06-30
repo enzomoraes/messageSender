@@ -1,6 +1,6 @@
 # messageSender
 
-App made in order to learn how conversa apps work, at supervision of Ana Karina FACOM-UFMS
+App made in order to learn how chatting apps work, at supervision of Ana Karina FACOM-UFMS
 =======
 Aplicativo criado para aprender como funcionam os aplicativos de bate-papo, sob a supervisão de Ana Karina FACOM-UFMS
 
