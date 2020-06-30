@@ -90,6 +90,7 @@ public class ContatosFragment extends Fragment {
                         }
                         List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
                         String idProprio = FirebaseAuth.getInstance().getUid();
+                        groupAdapter.clear();
                         for (DocumentSnapshot doc : docs){
 
                             User user = doc.toObject(User.class);
